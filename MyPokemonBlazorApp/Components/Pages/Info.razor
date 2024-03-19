@@ -1,18 +1,49 @@
 ﻿@page "/Info/{id:int}"
 @inject DatabaseContext DbContext
 
-<h3>Info</h3>
-
 @if (pokemon is not null)
 {
+    <h3>@pokemon?.Name's Stats</h3>
     <p>@Id</p>
     <p>@pokemon?.Name</p>
+
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: 0%"></div>
+    </div>
+
+    <br />
+
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: 25%"></div>
+    </div>
+
+    <br />
+
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: 50%"></div>
+    </div>
+
+    <br />
+
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: 75%"></div>
+    </div>
+
+    <br />
+
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: 100%"></div>
+    </div>
+
 }
 
 else
 {
-    <p>This town ain't big enough for the 2 of us.</p>
+    <h3>Pokemon with ID @Id not found!</h3>    
+    <br />
+    <p>Please try again with a valid ID.</p>
 }
+
 
 
 @code {

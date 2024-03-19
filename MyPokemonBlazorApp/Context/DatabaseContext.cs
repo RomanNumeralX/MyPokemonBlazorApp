@@ -18,5 +18,3 @@ namespace MyPokemonBlazorApp.Context
         }
     }
 }
-
-// this is my db
