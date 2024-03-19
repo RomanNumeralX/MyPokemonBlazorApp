@@ -1,0 +1,28 @@
+﻿@page "/Info/{id:int}"
+@inject DatabaseContext DbContext
+
+<h3>Info</h3>
+
+@if (pokemon is not null)
+{
+    <p>@Id</p>
+    <p>@pokemon?.Name</p>
+}
+
+else
+{
+    <p>This town ain't big enough for the 2 of us.</p>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Pokemon pokemon;
+
+    protected override void OnInitialized()
+    {
+            pokemon = DbContext.Pokemons.SingleOrDefault(p => p.Id == Id); @* finds pokemon where id links *@
+    }
+
+}
