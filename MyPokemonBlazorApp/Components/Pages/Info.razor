@@ -7,32 +7,34 @@
     <p>@Id</p>
     <p>@pokemon?.Name</p>
 
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar" style="width: 0%"></div>
+    <img src="https://img.pokemondb.net/artwork/ @pokemon?.Name .jpg"/>
+
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Total" aria-valuemin="1" aria-valuemax="780" style="height: 30px;">
+        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: @(pokemon.Total*100/780)%">Total</div>
     </div>
 
     <br />
 
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar" style="width: 25%"></div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.HP" aria-valuemin="1" aria-valuemax="255" style="height: 30px;">
+        <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" style="width: @(pokemon.HP*100/255)%">HP</div>
     </div>
 
     <br />
 
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar" style="width: 50%"></div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Attack" aria-valuemin="1" aria-valuemax="190" style="height: 30px;">
+        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width: @(pokemon.Attack*100/190)%">Attack</div>
     </div>
 
     <br />
 
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar" style="width: 75%"></div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Defence" aria-valuemin="1" aria-valuemax="230" style="height: 30px;">
+        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: @(pokemon.Defence*100/230)%">Defence</div>
     </div>
 
     <br />
 
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar" style="width: 100%"></div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Speed" aria-valuemin="1" aria-valuemax="180" style="height: 30px;">
+        <div class="progress-bar bg-mute progress-bar-striped progress-bar-animated" style="width: @(pokemon.Speed*100/180)%">Attack</div>
     </div>
 
 }
