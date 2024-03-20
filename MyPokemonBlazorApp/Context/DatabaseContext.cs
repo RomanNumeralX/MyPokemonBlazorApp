@@ -11,9 +11,7 @@ namespace MyPokemonBlazorApp.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var folder = Environment.SpecialFolder.MyDocuments;
-            var path = Environment.GetFolderPath(folder);
-            var dbpath = Path.Join(path, "pokemon.db");
+            var dbpath = @"C:\Users\User\Desktop\Pokemon Proj Full\Pokemon DB Stuff\pokemon.db";
             optionsBuilder.UseSqlite($"Data Source = {dbpath}");
         }
     }
