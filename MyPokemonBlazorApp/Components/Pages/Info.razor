@@ -25,7 +25,19 @@
  Speed = (float)Math.Round(Speed, 2); @* percentages implemented *@
 
 
-    <img src="@imageURL" onerror="this.onerror=null;this.src='/img/notfound.png';" class="img-fluid img-thumbnail rounded-start" alt="@Pokemon.Name" />
+ <div class="card">
+
+   <div class="card-body">
+    <img src="@imageURL" onerror="this.onerror=null;this.src='/img/notfound.png';" class="img-fluid img-thumbnail rounded-start" alt="@pokemon.Name" style="width : 100px;" align ="left"/>
+
+    <div class="card-body">
+        <span class="badge text-bg-primary">Type : @pokemon?.Type</span>
+        <span class="badge text-bg-primary">Generation : @pokemon?.Generation</span>
+    </div>
+
+   </div>
+
+    <br />
 
     <span>Health</span>
     <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Total" aria-valuemin="1" aria-valuemax="800" style="height: 50px;">
@@ -59,6 +71,8 @@
     <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Speed" aria-valuemin="1" aria-valuemax="255" style="height: 50px;">
         <div class="progress-bar bg-mute" style="width: @(pokemon.Speed*100/255)%; font-size : 16px; font-weight : bold; ">@Speed%</div>
     </div>
+
+</div>
 
 }
 
