@@ -1,4 +1,5 @@
 using MyPokemonBlazorApp.Components;
+using MyPokemonBlazorApp.Components.Pages;
 using MyPokemonBlazorApp.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,10 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddDbContext<DatabaseContext>();
+
 //connecting db (Berner)
+
+builder.Services.AddScoped<PokemonImageGrabber>();
 
 
 var app = builder.Build();

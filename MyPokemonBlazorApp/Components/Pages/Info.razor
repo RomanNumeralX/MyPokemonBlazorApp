@@ -1,5 +1,7 @@
 ﻿@page "/Info/{id:int}"
 @inject DatabaseContext DbContext
+@inject PokemonImageGrabber ImageGrabber
+
 
 @if (pokemon is not null)
 {
@@ -23,11 +25,11 @@
  Speed = (float)Math.Round(Speed, 2); @* percentages implemented *@
 
 
-  @*  <img src="https://img.pokemondb.net/artwork/ @pokemon?.Name .jpg"/> *@
+    <img src="@imageURL" onerror="this.onerror=null;this.src='/img/notfound.png';" class="img-fluid img-thumbnail rounded-start" alt="@Pokemon.Name" />
 
     <span>Health</span>
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Total" aria-valuemin="1" aria-valuemax="780" style="height: 50px;">
-        <div class="progress-bar bg-success" style="width: @(pokemon.Total*100/780)%; font-size : 16px; font-weight : bold; ">@health%</div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Total" aria-valuemin="1" aria-valuemax="800" style="height: 50px;">
+        <div class="progress-bar bg-success" style="width: @(pokemon.Total*100/800)%; font-size : 16px; font-weight : bold; ">@health%</div>
     </div>
 
     <br />
@@ -40,22 +42,22 @@
     <br />
 
     <span>Attack</span>
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Attack" aria-valuemin="1" aria-valuemax="190" style="height: 50px;">
-        <div class="progress-bar bg-warning" style="width: @(pokemon.Attack*100/190)%; font-size : 16px; font-weight : bold; ">@Attack%</div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Attack" aria-valuemin="1" aria-valuemax="255" style="height: 50px;">
+        <div class="progress-bar bg-warning" style="width: @(pokemon.Attack*100/255)%; font-size : 16px; font-weight : bold; ">@Attack%</div>
     </div>
 
     <br />
 
     <span>Defence</span>
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Defence" aria-valuemin="1" aria-valuemax="230" style="height: 50px;">
-        <div class="progress-bar bg-danger" style="width: @(pokemon.Defence*100/230)%; font-size : 16px; font-weight : bold; ">@Defence%</div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Defence" aria-valuemin="1" aria-valuemax="255" style="height: 50px;">
+        <div class="progress-bar bg-danger" style="width: @(pokemon.Defence*100/255)%; font-size : 16px; font-weight : bold; ">@Defence%</div>
     </div>
 
     <br />
 
     <span>Speed</span>
-    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Speed" aria-valuemin="1" aria-valuemax="180" style="height: 50px;">
-        <div class="progress-bar bg-mute" style="width: @(pokemon.Speed*100/180)%; font-size : 16px; font-weight : bold; ">@Speed%</div>
+    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="@pokemon.Speed" aria-valuemin="1" aria-valuemax="255" style="height: 50px;">
+        <div class="progress-bar bg-mute" style="width: @(pokemon.Speed*100/255)%; font-size : 16px; font-weight : bold; ">@Speed%</div>
     </div>
 
 }
@@ -72,11 +74,15 @@ else
 @code {
     [Parameter]
     public int Id { get; set; }
+    private string? imageURL { get; set; }
+
     private Pokemon pokemon;
 
     protected override void OnInitialized()
     {
-            pokemon = DbContext.Pokemons.SingleOrDefault(p => p.Id == Id); @* finds pokemon where id links *@
+        pokemon = DbContext.Pokemons.SingleOrDefault(p => p.Id == Id);
+        @* finds pokemon where id links *@
+        imageURL = ImageGrabber.GetImageUrl(pokemon);
     }
 
 }
