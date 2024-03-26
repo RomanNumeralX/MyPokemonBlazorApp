@@ -32,11 +32,15 @@
                         <ValidationMessage For="@(() => model.Name)" />
                     </div>
 
+                    
+                    
                     <div class="col-md-3">
-                        <label for="name" class="form-label">Name</label>
-                        <InputText class="form-control" placeholder="Name" @bind-Value="model.CompanionId" />
-                        <ValidationMessage For="@(() => model.Name)" />
+                        <label for="companion" class="form-label">Companion</label>
+                        <class="form-control" placeholder="Companion" @bind-Value="model.CompanionId" />  @*Leaving out Inpute*@
+                        <ValidationMessage For="@(() => model.CompanionId)" />
                     </div>
+
+                    
 
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary float-end">
