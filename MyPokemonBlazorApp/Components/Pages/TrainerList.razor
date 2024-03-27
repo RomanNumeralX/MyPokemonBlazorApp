@@ -34,12 +34,28 @@
 
                     
                     
-                    <div class="col-md-3">
-                        <label for="companion" class="form-label">Companion</label>
-                        <class="form-control" placeholder="Companion" @bind-Value="model.CompanionId" />  @*Leaving out Inpute*@
-                        <ValidationMessage For="@(() => model.CompanionId)" />
-                    </div>
+                 @* 
+                     <div class="col-md-3">
+                        <label for="companion" class="form-label">Companion ID</label>
+                        <InputNumber class="form-control" placeholder="Companion" @bind-Value="model.Companion" /> 
+                        <ValidationMessage For="@(() => model.Companion)" />
+                    </div>  
+                 *@
 
+
+                    <div class="dropdown">
+                        <label for="companion" class="form-label">Companion</label>
+                        <br />
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown button
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach (var pokemon in pokemons)  @*pokemons is now available because i mentioned it in private <Pokemons> list thing*@
+                            {
+                                <li><a class="dropdown-item">@pokemon.Name</a></li>
+                            }
+                        </ul>
+                    </div>
                     
 
                     <div class="col-md-12">
@@ -62,17 +78,19 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Companion ID</th>
-
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
         </tr>
     </thead>
     <tbody>
+        
         @foreach(var trainer in trainers)
         {
             <tr>
 
                 <td>@trainer.Id</td>
                 <td>@trainer.Name</td>
-                <td>@trainer.CompanionId</td>
+                <td>@trainer.Companion</td>
 
 
                 <td>
@@ -90,8 +108,9 @@
 
 @code {
     private List<Trainer>? trainers;
+    private List<Pokemon>? pokemons;
     private EditContext editContext;
-    private Trainer model;
+    public Trainer model;
     private bool showForm;
 
     private void ShowAddTrainer()
@@ -115,12 +134,14 @@
         else
             DbContext.Trainers.Update(model);
 
-        await DbContext.SaveChangesAsync();
+        await DbContext.SaveChangesAsync();  
+    @* issue here, as foreign key isn't being inputted either *@
         await Refresh();
     }
 
     protected override async Task OnInitializedAsync()
     {
+        pokemons = await DbContext.Pokemons.ToListAsync();
         await Refresh();
     }
 
