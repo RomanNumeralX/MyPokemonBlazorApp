@@ -29,17 +29,32 @@
                         <ValidationMessage For="@(() => model.Name)" />
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="type" class="form-label">Companion</label>
-                        <InputSelect class="form-select" placeholder="Companion" @bind-Value="companionId">
-                            @foreach (var pokemon in pokemons)
+                    
+                    
+                 @* 
+                     <div class="col-md-3">
+                        <label for="companion" class="form-label">Companion ID</label>
+                        <InputNumber class="form-control" placeholder="Companion" @bind-Value="model.Companion" /> 
+                        <ValidationMessage For="@(() => model.Companion)" />
+                    </div>  
+                 *@
+
+
+                    <div class="dropdown">
+                        <label for="companion" class="form-label">Companion</label>
+                        <br />
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown button
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach (var pokemon in pokemons)  @*pokemons is now available because i mentioned it in private <Pokemons> list thing*@
                             {
                                 <option value="@pokemon.Id">@pokemon.Name</option>
                             }
                         </InputSelect>
                         <ValidationMessage For="@(() => model.Companion)" />
                     </div>
-
+                    
 
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary float-end">
@@ -69,7 +84,9 @@
             <tr>
                 <td>@trainer.Id</td>
                 <td>@trainer.Name</td>
-                <td>@trainer.Companion.Name</td>
+                <td>@trainer.Companion</td>
+
+
                 <td>
                     <button class="btn btn-success" @onclick="() => TrainerEdit(trainer)">Edit</button>
                 </td>
@@ -89,15 +106,6 @@
     private List<Trainer>? trainers;
     private EditContext editContext;
     private bool showForm;
-    private Trainer model;
-    private List<Pokemon> pokemons;
-    private int companionId;
-    public EventCallback<bool> OnSaved { get; set; }
-
-
-
-
-
 
     private void ShowAddTrainer()
     {
@@ -115,21 +123,19 @@
 
     private async Task TrainerSubmit()
     {
-        Model.Companion = pokemons.Single(p => p.Id == companionId);
-
-        if (Model.Id == 0)
-            DbContext.Trainers.Add(Model);
+        if (model.Id == 0)
+            DbContext.Trainers.Add(model);
         else
             DbContext.Trainers.Update(Model);
 
-        await DbContext.SaveChangesAsync();
-        await OnSaved.InvokeAsync();
+        await DbContext.SaveChangesAsync();  
+    @* issue here, as foreign key isn't being inputted either *@
         await Refresh();
     }
 
     protected override async Task OnInitializedAsync()
     {
-
+        pokemons = await DbContext.Pokemons.ToListAsync();
         await Refresh();
     }
 
@@ -167,5 +173,3 @@
     }
 
 
-
-}
