@@ -2,12 +2,9 @@
 @inject DatabaseContext DbContext
 @inject PokemonImageGrabber ImageGrabber
 
-
 @if (pokemon is not null)
 {
     <h3>@pokemon?.Name's Stats</h3>
-    <p>@Id</p>
-    <p>@pokemon?.Name</p>
 
  float health = (float)pokemon.Total * 100 / 780;
  health = (float)Math.Round(health, 2);
@@ -25,14 +22,18 @@
  Speed = (float)Math.Round(Speed, 2); @* percentages implemented *@
 
 
- <div class="card">
+ <div class="card" style="padding:10px">
 
    <div class="card-body">
-    <img src="@imageURL" onerror="this.onerror=null;this.src='/img/notfound.png';" class="img-fluid img-thumbnail rounded-start" alt="@pokemon.Name" style="width : 100px;" align ="left"/>
+    <img src="@imageURL" onerror="this.onerror=null;this.src='/img/notfound.png';" class="img-fluid img-thumbnail rounded-start" alt="@pokemon.Name" style="width : 200px;" align ="left"/>
 
-    <div class="card-body">
-        <span class="badge text-bg-primary">Type : @pokemon?.Type</span>
-        <span class="badge text-bg-primary">Generation : @pokemon?.Generation</span>
+    <div class="card-body" style="align-content:end;">
+        <span class="badge text-bg-secondary col-2">Name : @pokemon?.Name</span>
+        <span class="badge text-bg-secondary col-2">ID : @pokemon?.Id</span>
+    </div>
+    <div class="card-body" style="align-content:end;">
+        <span class="badge text-bg-secondary col-2">Type : @pokemon?.Type</span>
+        <span class="badge text-bg-secondary col-2">Generation : @pokemon?.Generation</span>
     </div>
 
    </div>

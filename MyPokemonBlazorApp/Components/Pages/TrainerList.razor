@@ -2,6 +2,8 @@
 
 @rendermode InteractiveServer
 @inject DatabaseContext DbContext
+@inject NavigationManager NavigationManager
+
 
 <h3>Trainers</h3>
 
@@ -29,32 +31,17 @@
                         <ValidationMessage For="@(() => model.Name)" />
                     </div>
 
-                    
-                    
-                 @* 
-                     <div class="col-md-3">
-                        <label for="companion" class="form-label">Companion ID</label>
-                        <InputNumber class="form-control" placeholder="Companion" @bind-Value="model.Companion" /> 
-                        <ValidationMessage For="@(() => model.Companion)" />
-                    </div>  
-                 *@
-
-
-                    <div class="dropdown">
-                        <label for="companion" class="form-label">Companion</label>
-                        <br />
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown button
-                        </button>
-                        <ul class="dropdown-menu">
-                            @foreach (var pokemon in pokemons)  @*pokemons is now available because i mentioned it in private <Pokemons> list thing*@
+                    <div class="col-md-6">
+                        <label for="type" class="form-label">Companion</label>
+                        <InputSelect class="form-select" placeholder="Companion" @bind-Value="companionId">
+                            @foreach (var pokemon in pokemons)
                             {
                                 <option value="@pokemon.Id">@pokemon.Name</option>
                             }
                         </InputSelect>
                         <ValidationMessage For="@(() => model.Companion)" />
                     </div>
-                    
+
 
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary float-end">
@@ -74,8 +61,10 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Companion</th>
+            <th scope="col">Companion ID</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
+            <th scope="col">Pokemon Info</th>
         </tr>
     </thead>
     <tbody>
@@ -84,14 +73,19 @@
             <tr>
                 <td>@trainer.Id</td>
                 <td>@trainer.Name</td>
-                <td>@trainer.Companion</td>
-
+                <td>@trainer.Companion.Name</td>
+                <td>@trainer.Companion.Id</td>
 
                 <td>
                     <button class="btn btn-success" @onclick="() => TrainerEdit(trainer)">Edit</button>
                 </td>
+
                 <td>
                     <button class="btn btn-danger" @onclick="() => TrainerDelete(trainer)">Delete</button>
+                </td>
+
+                <td>
+                    <button class="btn btn-primary" @onclick="() => Info(trainer.Companion.Id)">Info</button>
                 </td>
             </tr>
         }
@@ -106,6 +100,18 @@
     private List<Trainer>? trainers;
     private EditContext editContext;
     private bool showForm;
+    private Trainer model;
+    private List<Pokemon> pokemons;
+    private int companionId;
+    public EventCallback<bool> OnSaved { get; set; }
+
+
+    private void Info(int pokemon_id)
+    {
+    NavigationManager.NavigateTo($"/Info/{pokemon_id}");
+    }
+
+
 
     private void ShowAddTrainer()
     {
@@ -123,19 +129,21 @@
 
     private async Task TrainerSubmit()
     {
-        if (model.Id == 0)
-            DbContext.Trainers.Add(model);
+        Model.Companion = pokemons.Single(p => p.Id == companionId);
+
+        if (Model.Id == 0)
+            DbContext.Trainers.Add(Model);
         else
             DbContext.Trainers.Update(Model);
 
-        await DbContext.SaveChangesAsync();  
-    @* issue here, as foreign key isn't being inputted either *@
+        await DbContext.SaveChangesAsync();
+        await OnSaved.InvokeAsync();
         await Refresh();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        pokemons = await DbContext.Pokemons.ToListAsync();
+
         await Refresh();
     }
 
@@ -173,3 +181,5 @@
     }
 
 
+
+}
