@@ -7,6 +7,7 @@
 
 <h3>Trainers</h3>
 
+
 <div class="row g-0">
     <div class="col-md-12">
         <button class="btn btn-primary float-end" @onclick="ShowAddTrainer">
@@ -108,7 +109,7 @@
 
     private void Info(int pokemon_id)
     {
-    NavigationManager.NavigateTo($"/Info/{pokemon_id}");
+        NavigationManager.NavigateTo($"/Info/{pokemon_id}");
     }
 
 
@@ -161,8 +162,6 @@
         await DbContext.SaveChangesAsync();
         await Refresh();
     }
-
-
 
     public Trainer Model
     {

@@ -1,10 +1,12 @@
 ﻿@page "/Info/{id:int}"
 @inject DatabaseContext DbContext
 @inject PokemonImageGrabber ImageGrabber
+@using HtmlAgilityPack;
 
 @if (pokemon is not null)
 {
     <h3>@pokemon?.Name's Stats</h3>
+    <h2>@DescriptionGetter(pokemon.Name)</h2> <!-- Moved the call to DescriptionGetter inside an <h2> tag -->
 
  float health = (float)pokemon.Total * 100 / 780;
  health = (float)Math.Round(health, 2);
@@ -34,6 +36,9 @@
     <div class="card-body" style="align-content:end;">
         <span class="badge text-bg-secondary col-2">Type : @pokemon?.Type</span>
         <span class="badge text-bg-secondary col-2">Generation : @pokemon?.Generation</span>
+    </div>
+    <div class="card-body" style="align-content:end;">
+        <p>@DescriptionGetter(pokemon.Name)</p>
     </div>
 
    </div>
@@ -99,5 +104,27 @@ else
         @* finds pokemon where id links *@
         imageURL = ImageGrabber.GetImageUrl(pokemon);
     }
+
+    private string DescriptionGetter(string pokemonName)
+    {
+        string url = $"https://www.pokemon.com/uk/pokedex/{pokemonName}";
+
+        var web = new HtmlWeb();
+        var doc = web.Load(url);
+
+        var descriptionElement = doc.DocumentNode.SelectSingleNode("//p[contains(@class, 'version-x') and contains(@class, 'active')]");
+
+        if (descriptionElement != null)
+        {
+            return descriptionElement.InnerText.Trim();
+        }
+        else
+        {
+            return "Description not found.";
+        }
+
+    }
+
+
 
 }
